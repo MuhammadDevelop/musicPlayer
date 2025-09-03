@@ -37,6 +37,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  flex-direction: column;
   background:
     radial-gradient(1200px 600px at 20% 10%, #1a2050 0%, transparent 60%),
     radial-gradient(1000px 500px at 90% 90%, #261a5a 0%, transparent 60%),
@@ -199,7 +200,19 @@ input[type="range"]::-moz-range-thumb:hover{
   color: var(--text);
   font-weight: 600;
 }
+.musicBox{
+  width: 700px;
+  height: 120px;
+  margin: 50px auto;
+  
+}
+.musicBox img{
+width: 300px;
+height: 100%;
+object-fit: cover;
+  border-radius: 20px;
 
+}
 /* Volume slider pastda bo‘lsin */
 #volume{
   width: 100%;
@@ -214,12 +227,56 @@ input[type="range"]::-moz-range-thumb:hover{
   .buttpn__group button{ padding: 9px 10px; border-radius: 12px; font-size: 14px; }
   .music_name{ font-size: 20px; }
 }
+.header__list{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  gap: 30px;
+}
+.header__list input{
+  width: 300px;
+  height: 35px;
+ border: 1px solid #000;
+ border-radius: 15px;
+}
+.musicBoxHeart{
+  font-size: 95px;
+  background: transparent;
+  border: none;
+}
+.work{
+  width: 300px;
+  height: 400px;
+  margin: 0 auto;
+  border: 1px solid #000;
+  display: none;
+}
+.workOpen{
+  display: block;
+}
 
     </style>
     
     <body>
-  
+  <header class="header">
+    <div class="conatiner">
+      <ul class="header__list">
+        <li class="header__listItem">
+          <h1>Qidiruv</h1>
+        </li>
+        <li class="header__listItem">
+          <input type="text" placeholder="qidiring" class="searchInp">
+        </li>
+        <li class="header__listItem">
+         <button class="btnModal">💙</button>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <div class="work"></div>
  <div class="parnet">
+
     <div class="player">
         <h1 class="music_name">Nomi</h1>
         <img  src="" class="music__img" alt="">
@@ -240,6 +297,18 @@ input[type="range"]::-moz-range-thumb:hover{
           <span class="musicVolume">ovoz 100%</span><input type="range" id="volume" min="0" max="100"value="100">
 
     </div>
+    
+    <table class="lists"> 
+<tr>
+  <th>name</th>
+  <th>img</th>
+  <th>music</th>
+</tr>
+<tr>
+ 
+</tr>
+      
+    </table>
  </div>
     <script src="./js/main.js"></script>
     </body>

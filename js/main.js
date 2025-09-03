@@ -1,4 +1,3 @@
-  
   let $player = document.getElementById("player")
   let $play = document.querySelector(".playBtn")
   let $div = document.querySelector(".player")
@@ -6,7 +5,7 @@
   let $img = document.querySelector(".music__img")
   let $duration = document.querySelector(".duration");
   let $pause = document.querySelector(".puseBtn")
-  let $prev = document.querySelector(".prevBtn"   )
+  let $prev = document.querySelector(".prevBtn")
   let $next = document.querySelector(".nextBtn")
   let $min = document.querySelector(".minut")
   let $sec = document.querySelector(".second")
@@ -14,6 +13,13 @@
   let $progress = document.querySelector("#progress")
   let $volume = document.querySelector("#volume")
   let $musicVolume = document.querySelector(".musicVolume")
+  let $musicLists = document.querySelector(".lists")
+  let $musicSearch = document.querySelector(".searchInp")
+  let $likeBtn = document.querySelector(".btnModal")
+  let $likeList = document.querySelector(".work")
+
+
+
 
 
 
@@ -22,8 +28,7 @@
   let $time = document.querySelector(".time")
 
 
-  let musicplayers = [
-    {
+  let musicplayers = [{
       name: "Har kun",
       img: "https://i.ytimg.com/vi/FRZ6ldGsD74/sddefault.jpg",
       music: "../music/mus-1.mp3",
@@ -40,16 +45,17 @@
     },
     {
       name: "Odamlar",
-      img: "https://i.ytimg.com/vi/SoMVksY7Tbg/maxresdefault.jpg",  
+      img: "https://i.ytimg.com/vi/SoMVksY7Tbg/maxresdefault.jpg",
       music: "../music/mus-4.mp3",
-    },  
+    },
     {
       name: "Dunyo",
       img: "https://muzfm.tv/_ipx/q_85&fit_cover&f_webp&s_200x200/muzfm/uploads/images/people/2025/08/mashhur-muhammad_1754414544.jpg",
       music: "../music/mus-5.mp3",
     }
-    
+
   ];
+
 
   let currentIndex = 0;
 
@@ -60,72 +66,148 @@
     $player.src = musicplayers[currentIndex].music;
   }
   updatePlayer();
-  $play.addEventListener("click",()=>{
+  $play.addEventListener("click", () => {
 
-  $player.play()
-    
-  }
-  )
-  $pause.addEventListener("click",()=>{
-      $player.pause()
+    $player.play()
+
+  })
+  $pause.addEventListener("click", () => {
+    $player.pause()
   })
 
-  $next.addEventListener("click",()=>{
-  currentIndex++;
+  $next.addEventListener("click", () => {
+    currentIndex++;
 
-  if(currentIndex >=musicplayers.length) currentIndex = 0
-  $player.src = musicplayers[currentIndex]
+    if (currentIndex >= musicplayers.length) currentIndex = 0
+    $player.src = musicplayers[currentIndex]
 
-  updatePlayer();
-  $player.play()
+    updatePlayer();
+    $player.play()
   })
-  $prev.addEventListener("click",()=>{
+  $prev.addEventListener("click", () => {
 
-  currentIndex --;
+    currentIndex--;
 
-  if(currentIndex <0 ) currentIndex = musicplayers.length -1  
-  $player.src = musicplayers[currentIndex]
-  updatePlayer();
-  $player.play()
+    if (currentIndex < 0) currentIndex = musicplayers.length - 1
+    $player.src = musicplayers[currentIndex]
+    updatePlayer();
+    $player.play()
   })
-  $player.addEventListener("timeupdate",()=>{
+  $player.addEventListener("timeupdate", () => {
     let currentTime = Math.floor($player.currentTime)
     $progress.value = ($player.currentTime / $player.duration) * 100;
     let minut = Math.floor(currentTime / 60)
     let second = currentTime % 60
 
-    if(second <10) second = "0"+second
-    if(minut <10) minut = "0"+minut
-    $min.textContent = `${minut }`   
+    if (second < 10) second = "0" + second
+    if (minut < 10) minut = "0" + minut
+    $min.textContent = `${minut }`
     $sec.textContent = second
-if(    $player.duration){
-  let musicMinuts = Math.floor($player.duration/60)
-  let musicSeconds = Math.floor($player.duration%60)
+    if ($player.duration) {
+      let musicMinuts = Math.floor($player.duration / 60)
+      let musicSeconds = Math.floor($player.duration % 60)
 
-if(musicSeconds<10)musicSeconds = "0"+musicSeconds;
-if(musicSeconds<10)musicMinuts = "0"+musicMinuts;
-$duration.textContent = musicMinuts+ ":"+musicSeconds
-}
-  })  
-$progress.addEventListener("input",()=>{
+      if (musicSeconds < 10) musicSeconds = "0" + musicSeconds;
+      if (musicSeconds < 10) musicMinuts = "0" + musicMinuts;
+      $duration.textContent = musicMinuts + ":" + musicSeconds
+    }
+  })
+  $progress.addEventListener("input", () => {
+
+    let newTime = ($progress.value / 100) * $player.duration;
+    $player.currentTime = newTime
+
+  })
+  $player.addEventListener("ended", () => {
+    currentIndex++;
+
+    if (currentIndex >= musicplayers.length) currentIndex = 0
+    $player.src = musicplayers[currentIndex]
+
+    updatePlayer();
+    $player.play()
+  })
+  $volume.addEventListener("input", () => {
+    $player.volume = $volume.value / 100
+    let ovoz = Math.round($volume.value)
+    $musicVolume.innerText = "ovoz:" + ovoz + "%"
+
+  })
+  musicplayers.forEach((item, index) => {
+    let $box = document.createElement("tr");
+    $box.innerHTML = `
+    <td class="musicBox"><h1>${item.name}</h1></td>
+    <td class="musicBox"><img src="${item.img}" alt=""></td>
+    <td class="musicBox"><button data-index="${index}">play</button></td>
+    <td class="musicBoxHeart0"><button data-id="${index}">💙</button></td>
+
+  `;
+    $musicLists.appendChild($box);
+  });
+
+  $musicSearch.addEventListener("keyup", () => {
+    let searchValue = $musicSearch.value.toLowerCase().trim();
+    if (searchValue === "") {
+      showMusicList(musicplayers);
+    } else {
+      let result = musicplayers.filter(music =>
+        music.name.toLowerCase().includes(searchValue)
+      );
+      if (result.length > 0) {
+        showMusicList(result);
+      } else {
+        $musicLists.innerHTML = `<tr><td style="text-align:"center"" colspan="3">Qo‘shiq topilmadi 😢</td></tr>`;
+      }
+    }
+  });
+
+  function showMusicList(list) {
+    $musicLists.innerHTML = "";
+    list.forEach((item, index) => {
+      let $box = document.createElement("tr");
+      $box.innerHTML = `
+      <td class="musicBox"><h1>${item.name}</h1></td>
+      <td class="musicBox"><img src="${item.img}" alt=""></td>
+      <td class="musicBox"><button data-index"${index}">play</button></td>
+
+
+    `;
+      $musicLists.appendChild($box);
+    });
+  }
+
+  $musicLists.addEventListener("click", (e) => {
+    if (e.target.tagName.toLowerCase() === "img" || e.target.tagName.toLowerCase() === "button") {
+      let clickIndex = -1
+      if (e.target.tagName.toLowerCase() === "img") {
+        let clickImg = e.target.src;
+        clickIndex = musicplayers.findIndex(music => music.img === clickImg);
+      }
+      if (e.target.tagName.toLowerCase() === "button") {
+        let clickIndexBtn = e.target.dataset.index;
+        let  likeBtn = e.target.dataset.id 
+        currentIndex = likeBtn
+        updatePlayer();
+        let music = musicplayers[likeBtn];
+        console.log(music);
+localStorage.setItem("joyla",JSON.stringify(music)) 
+
+        if (clickIndexBtn !== undefined) {
+          clickIndex = parseInt(clickIndexBtn);
+        }
+      }
+      if (clickIndex !== -1) {
+        currentIndex = clickIndex;
+        currentIndex = likeBtn;
+
+        updatePlayer();
+        $player.play();
+      }
+    }
+  });
+  $likeBtn.addEventListener("click",()=>{
+    console.log("ok");
+  $likeList.classList.add("workOpen")
+ let items =  localStorage.getItem("joyla")
   
-let newTime = ($progress.value / 100) * $player.duration;
-$player.currentTime = newTime
-
-})
-$player.addEventListener("ended",()=>{
-  currentIndex++;
-
-  if(currentIndex >=musicplayers.length) currentIndex = 0
-  $player.src = musicplayers[currentIndex]
-
-  updatePlayer();
-  $player.play()
-})
-$volume.addEventListener("input",()=>{
-$player.volume =$volume.value /100
-let ovoz = Math.round($volume.value)
-$musicVolume.innerText = "ovoz:"+ovoz+"%"
-
-})
-
+  })

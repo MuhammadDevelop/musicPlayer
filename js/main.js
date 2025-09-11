@@ -16,7 +16,9 @@
   let $musicLists = document.querySelector(".lists")
   let $musicSearch = document.querySelector(".searchInp")
   let $likeBtn = document.querySelector(".btnModal")
-  let $likeList = document.querySelector(".work")
+  let $likeList = document.querySelector(".header__btn")
+
+
 
 
 
@@ -61,9 +63,13 @@
 
 
   function updatePlayer() {
-    $name.innerHTML = musicplayers[currentIndex].name;
-    $img.src = musicplayers[currentIndex].img;
-    $player.src = musicplayers[currentIndex].music;
+    if (musicplayers[currentIndex]) {  
+      $name.innerHTML = musicplayers[currentIndex].name;
+      $img.src = musicplayers[currentIndex].img;
+      $player.src = musicplayers[currentIndex].music;
+    } else {
+      console.error("❌ currentIndex noto‘g‘ri:", currentIndex);
+    }
   }
   updatePlayer();
   $play.addEventListener("click", () => {
@@ -134,80 +140,90 @@
 
   })
   musicplayers.forEach((item, index) => {
+
     let $box = document.createElement("tr");
     $box.innerHTML = `
     <td class="musicBox"><h1>${item.name}</h1></td>
     <td class="musicBox"><img src="${item.img}" alt=""></td>
     <td class="musicBox"><button data-index="${index}">play</button></td>
-    <td class="musicBoxHeart0"><button data-id="${index}">💙</button></td>
-
+    <td class="musicBox"><button class="likeBtn" data-id="${index}">💙</button></td>
   `;
     $musicLists.appendChild($box);
+
   });
 
-  $musicSearch.addEventListener("keyup", () => {
-    let searchValue = $musicSearch.value.toLowerCase().trim();
-    if (searchValue === "") {
-      showMusicList(musicplayers);
-    } else {
-      let result = musicplayers.filter(music =>
-        music.name.toLowerCase().includes(searchValue)
-      );
-      if (result.length > 0) {
-        showMusicList(result);
-      } else {
-        $musicLists.innerHTML = `<tr><td style="text-align:"center"" colspan="3">Qo‘shiq topilmadi 😢</td></tr>`;
+
+
+$musicLists.addEventListener("click",(e)=>{
+if(e.target.tagName.toLowerCase() === "button"){
+let clickBtn = e.target.dataset.index;
+
+currentIndex = clickBtn;
+
+updatePlayer()
+
+$player.play()
+}
+})
+$musicSearch.addEventListener("keyup", (e) => {
+  let searchValue = $musicSearch.value.toLowerCase().trim();
+  if (searchValue === "") {
+    showMusicList(musicplayers);
+  } else {
+    let result = musicplayers.filter(music =>
+      music.name.toLowerCase().includes(searchValue)
+      
+     
+    );
+    if(e.target.tagName.toLowerCase() === "button"){
+      let clickBtn = e.target.dataset.index;
+      currentIndex = clickBtn;
+
+      
+      updatePlayer()
+      
+      $player.play()
       }
-    }
-  });
 
-  function showMusicList(list) {
-    $musicLists.innerHTML = "";
-    list.forEach((item, index) => {
-      let $box = document.createElement("tr");
-      $box.innerHTML = `
+
+    if (result.length > 0) {
+      showMusicList(result);
+    } else {
+      $musicLists.innerHTML =` <tr><td colspan="3">Qo‘shiq topilmadi 😢</td></tr>;`
+    }
+  }
+});
+function showMusicList(list) {
+  $musicLists.innerHTML = "";
+  list.forEach((item) => {
+   
+    let realIndex = musicplayers.findIndex(m => m.name === item.name);
+  
+    let $box = document.createElement("tr");
+    $box.innerHTML = `
       <td class="musicBox"><h1>${item.name}</h1></td>
       <td class="musicBox"><img src="${item.img}" alt=""></td>
-      <td class="musicBox"><button data-index"${index}">play</button></td>
-
-
+      <td class="musicBox">
+        <button class="playBtn" data-index="${realIndex}" data-src="${item.music}">▶️ Play</button>
+      </td>
     `;
-      $musicLists.appendChild($box);
-    });
-  }
-
-  $musicLists.addEventListener("click", (e) => {
-    if (e.target.tagName.toLowerCase() === "img" || e.target.tagName.toLowerCase() === "button") {
-      let clickIndex = -1
-      if (e.target.tagName.toLowerCase() === "img") {
-        let clickImg = e.target.src;
-        clickIndex = musicplayers.findIndex(music => music.img === clickImg);
-      }
-      if (e.target.tagName.toLowerCase() === "button") {
-        let clickIndexBtn = e.target.dataset.index;
-        let  likeBtn = e.target.dataset.id 
-        currentIndex = likeBtn
-        updatePlayer();
-        let music = musicplayers[likeBtn];
-        console.log(music);
-localStorage.setItem("joyla",JSON.stringify(music)) 
-
-        if (clickIndexBtn !== undefined) {
-          clickIndex = parseInt(clickIndexBtn);
-        }
-      }
-      if (clickIndex !== -1) {
-        currentIndex = clickIndex;
-        currentIndex = likeBtn;
-
-        updatePlayer();
-        $player.play();
-      }
-    }
+    $musicLists.append($box);
   });
-  $likeBtn.addEventListener("click",()=>{
-    console.log("ok");
-  $likeList.classList.add("workOpen")
- let items =  localStorage.getItem("joyla")
   
-  })
+
+  let playBtns = document.querySelectorAll(".playBtn");
+  playBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const src = btn.dataset.src; 
+      const data = btn.dataset.index;
+  
+      currentIndex = parseInt(data);  
+      $player.src = src;
+      $player.play();
+  
+      updatePlayer();
+    });
+  });
+  
+}
+

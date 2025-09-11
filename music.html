@@ -16,7 +16,7 @@
             box-sizing: border-box;
           
         }
-/* Google Font ixtiyoriy (xohlasangiz qo‘ying) */
+
 
 :root{
   --bg: #0f1220;
@@ -46,8 +46,146 @@ body{
   color: var(--text);
 }
 
-/* Konteyner */
-.parnet{ /* (parent deb yozishda xato bo‘lishi mumkin, sizda class 'parnet') */
+.parnet{ 
+  width: 100%;
+  padding: 24px;
+}
+
+/* Player karta */
+.player{
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, var(--card), #101433);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  backdrop-filter: blur(6px);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.player:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+}
+
+/* Sarlavha */
+.music_name{
+  margin: 0 0 12px 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+/* Rasm */
+.music__img{
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  margin-bottom: 16px;
+  background: #0b0e23;
+}
+
+/* Tugmalar guruhi */
+.buttpn__group{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 10px 0 6px;
+}
+
+.buttpn__group button{
+  appearance: none;
+  border: 0;
+  outline: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #1b2150, #151a3f);
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: .2px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 6px 16px rgba(0,0,0,.35);
+  transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+}
+.buttpn__group button:hover{
+  background: linear-gradient(180deg, #22306e, #19235a);
+}
+.buttpn__group button:active{
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(0,0,0,.2),
+    0 2px 10px rgba(0,0,0,.35);
+}
+
+/* Vaqt va progress qismi */
+.time{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin: 10px 0 16px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Progress & Volume umumiy uslub */
+input[type="range"]{
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  outline: none;
+  flex: 1;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.35);
+  position: relative;
+}
+
+
+       
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          
+        }
+
+
+:root{
+  --bg: #0f1220;
+  --card: #151935;
+  --text: #e9ecf8;
+  --muted: #9aa3c7;
+  --accent: #6c8cff;
+  --accent-2: #8a6cff;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 20px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+  background:
+    radial-gradient(1200px 600px at 20% 10%, #1a2050 0%, transparent 60%),
+    radial-gradient(1000px 500px at 90% 90%, #261a5a 0%, transparent 60%),
+    var(--bg);
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+}
+
+.parnet{ 
   width: 100%;
   padding: 24px;
 }
@@ -255,6 +393,241 @@ object-fit: cover;
 .workOpen{
   display: block;
 }
+/* Table umumiy style */
+.lists {
+  width: 80%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Jadval sarlavhalari */
+.lists th {
+  background: #4CAF50;
+  color: white;
+  padding: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Jadval satrlari */
+.lists td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.likeBtn{
+  background-color: transparent;
+}
+/* Hover effekti */
+.lists tr:hover {
+  background-color: #f1f1f1;
+  transition: 0.3s;
+}
+
+/* Rasmlar uchun */
+.lists img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Play button */
+.lists button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #4CAF50;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.lists button:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+
+
+ 
+/* Track (Firefox) */
+input[type="range"]::-moz-range-track{
+  height: 8px;
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+}
+
+/* Thumb (Chrome) */
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+  border: 3px solid var(--accent);
+  cursor: pointer;
+  margin-top: -5px; /* thumb ni markazga tekislash */
+  transition: transform .15s ease, border-color .2s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover{
+  transform: scale(1.06);
+  border-color: var(--accent-2);
+}
+
+/* Thumb (Firefox) */
+input[type="range"]::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+  cursor: pointer;
+  transition: transform .15s ease, border-color .2s ease;
+}
+input[type="range"]::-moz-range-thumb:hover{
+  transform: scale(1.06);
+  border-color: var(--accent-2);
+}
+
+/* Progress (o‘rtadagi range) */
+#progress{
+  flex: 1;
+}
+
+/* Duration matni */
+.duration{
+  color: var(--text);
+  font-weight: 600;
+}
+.musicBox{
+  width: 700px;
+  height: 120px;
+  margin: 50px auto;
+  
+}
+.musicBox img{
+width: 300px;
+height: 100%;
+object-fit: cover;
+  border-radius: 20px;
+
+}
+/* Volume slider pastda bo‘lsin */
+#volume{
+  width: 100%;
+  margin-top: 6px;
+  background: linear-gradient(90deg, #627dff, #9a6bff);
+}
+
+/* Kichik ekranlarga moslashuv */
+@media (max-width: 480px){
+  .player{ padding: 18px; border-radius: 16px; }
+  .music__img{ height: 180px; border-radius: 14px; }
+  .buttpn__group button{ padding: 9px 10px; border-radius: 12px; font-size: 14px; }
+  .music_name{ font-size: 20px; }
+}
+.header__list{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  gap: 30px;
+}
+.header__list input{
+  width: 300px;
+  height: 35px;
+ border: 1px solid #000;
+ border-radius: 15px;
+}
+.musicBoxHeart{
+  font-size: 95px;
+  background: transparent;
+  border: none;
+}
+.work{
+  width: 300px;
+  height: 400px;
+  margin: 0 auto;
+  border: 1px solid #000;
+  display: none;
+}
+.workOpen{
+  display: block;
+}
+/* Table umumiy style */
+.lists {
+  width: 80%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Jadval sarlavhalari */
+.lists th {
+  background: #4CAF50;
+  color: white;
+  padding: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Jadval satrlari */
+.lists td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.likeBtn{
+  background-color: transparent;
+}
+/* Hover effekti */
+.lists tr:hover {
+  background-color: #f1f1f1;
+  transition: 0.3s;
+}
+
+/* Rasmlar uchun */
+.lists img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Play button */
+.lists button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.lists button:hover {
+
+  transform: scale(1.05);
+}
+
+
 
     </style>
     
@@ -269,7 +642,7 @@ object-fit: cover;
           <input type="text" placeholder="qidiring" class="searchInp">
         </li>
         <li class="header__listItem">
-         <button class="btnModal">💙</button>
+       <button class="header__btn"> <span>💙</span></button>
         </li>
       </ul>
     </div>
@@ -304,12 +677,12 @@ object-fit: cover;
   <th>img</th>
   <th>music</th>
 </tr>
-<tr>
- 
-</tr>
-      
+
+      <h1 class="name"></h1>
     </table>
+    
  </div>
+
     <script src="./js/main.js"></script>
     </body>
     </html>

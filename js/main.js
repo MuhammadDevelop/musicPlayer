@@ -145,7 +145,7 @@
     $box.innerHTML = `
     <td class="musicBox"><h1>${item.name}</h1></td>
     <td class="musicBox"><img src="${item.img}" alt=""></td>
-    <td class="musicBox"><button data-index="${index}">play</button></td>
+    <td class="musicBox"><button class="playBtn" data-index="${index}">play</button></td>
     <td class="musicBox"><button class="likeBtn" data-id="${index}">💙</button></td>
   `;
     $musicLists.appendChild($box);
@@ -155,14 +155,40 @@
 
 
 $musicLists.addEventListener("click",(e)=>{
-if(e.target.tagName.toLowerCase() === "button"){
-let clickBtn = e.target.dataset.index;
+  if (e.target.classList.contains("removelikeBtn")) {
+    let removeName = e.target.dataset.remove;
 
-currentIndex = clickBtn;
+    let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
+
+    likedSongs = likedSongs.filter(song => song.name !== removeName);
+
+    localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
+
+
+    e.target.closest("tr").remove();
+  }
+if(e.target.classList.contains("playBtn")){
+let clickBtn = e.target.dataset.index;
+currentIndex = clickBtn
 
 updatePlayer()
 
 $player.play()
+}
+if(e.target.classList.contains("likeBtn")) {
+  let clickLike = e.target.dataset.id;
+  let song = musicplayers[clickLike];
+  let likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];  
+  let exists = likedSongs.find(item => item.name === song.name);
+  if (!exists) {
+    likedSongs.push(song)
+    e.target.innerText = "💚"; 
+  } else {
+    likedSongs = likedSongs.filter(item => item.name !== song.name);
+    e.target.innerText = "💙";
+  }
+
+  localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
 }
 })
 $musicSearch.addEventListener("keyup", (e) => {
@@ -198,32 +224,60 @@ function showMusicList(list) {
   list.forEach((item) => {
    
     let realIndex = musicplayers.findIndex(m => m.name === item.name);
-  
+
     let $box = document.createElement("tr");
     $box.innerHTML = `
       <td class="musicBox"><h1>${item.name}</h1></td>
       <td class="musicBox"><img src="${item.img}" alt=""></td>
       <td class="musicBox">
         <button class="playBtn" data-index="${realIndex}" data-src="${item.music}">▶️ Play</button>
+        <td class="musicBox"><button class="likeBtn" data-id="${realIndex}">💙</button></td>
       </td>
     `;
     $musicLists.append($box);
-  });
-  
 
-  let playBtns = document.querySelectorAll(".playBtn");
-  playBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const src = btn.dataset.src; 
-      const data = btn.dataset.index;
-  
-      currentIndex = parseInt(data);  
-      $player.src = src;
-      $player.play();
-  
-      updatePlayer();
-    });
   });
+  
+let playBtns = document.querySelectorAll(".playBtn")
+playBtns.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const src = btn.dataset.src
+    const data = btn.dataset.index
+
+
+   currentIndex  = parent(data);
+   $player.src = src;
+   $player.play()
+   updatePlayer()
+  })
+})
+const id = btn.dataset.id
+
+console.log(geVale);
   
 }
 
+$likeList.addEventListener("click",(e)=>{
+  let getLike =JSON.parse( localStorage.getItem("likedSongs"))
+  
+  getLike.forEach(song=>{
+    let realIndex = musicplayers.findIndex(m => m.name === getLike.name);
+
+
+  console.log(getLike);
+let likeBox = document.createElement("tr")
+likeBox.innerHTML = `<td class="musicBox"><h1>${song.name}</h1></td>
+<td class="musicBox"><img src="${song.img}" alt=""></td>
+<td class="musicBox">
+  <button class="playBtn" data-index="${realIndex}" data-src="${song.music}">▶️ Play</button>
+  <td class="musicBox"><button class="removelikeBtn" data-remove="${realIndex}">🗑️</button></td>
+  </td>`
+  $likeList.append(likeBox)
+  if(e.target.classList.contains("removelikeBtn")) {
+    let clickLike = e.target.dataset.remove;
+    let song = musicplayers[clickLike];
+    let removeSongs  = localStorage.removeItem("likedSongs") || []; 
+    console.log(removeSongs);
+  }
+})
+})

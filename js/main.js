@@ -24,10 +24,25 @@
 
 
 
-
-
+fetch(" http://127.0.0.1:8000/songs")
+.then(res=>res.json())
+.then(data=>{
+  data.map((item,index)=>{
+    console.log(item);
+    let $box = document.createElement("tr");
+    $box.innerHTML = `
+    <td class="musicBox"><h1>${item.title}</h1></td>
+    <td class="musicBox"><img src="${item.img}" alt=""></td>
+    <td class="musicBox"><button class="playBtn" data-index="${index}">play</button></td>
+    <td class="musicBox"><button class="likeBtn" data-id="${index}">💙</button></td>
+  `;
+    $musicLists.appendChild($box);
+  })
+  
+})
 
   let $time = document.querySelector(".time")
+
 
 
   let musicplayers = [{
@@ -62,15 +77,15 @@
   let currentIndex = 0;
 
 
-  function updatePlayer() {
-    if (musicplayers[currentIndex]) {  
-      $name.innerHTML = musicplayers[currentIndex].name;
-      $img.src = musicplayers[currentIndex].img;
-      $player.src = musicplayers[currentIndex].music;
-    } else {
-      console.error("❌ currentIndex noto‘g‘ri:", currentIndex);
-    }
-  }
+  // function updatePlayer() {
+  //   if (data[currentIndex]) {  
+  //     $name.innerHTML = musicplayers[currentIndex].name;
+  //     $img.src = musicplayers[currentIndex].img;
+  //     $player.src = musicplayers[currentIndex].music;
+  //   } else {
+  //     console.error( currentIndex);
+  //   }
+  // }
   updatePlayer();
   $play.addEventListener("click", () => {
 
@@ -100,7 +115,7 @@
     $player.play()
   })
   $player.addEventListener("timeupdate", () => {
-    let currentTime = Math.floor($player.currentTime)
+    let currentTime = Math.floor($player.currentTime)  
     $progress.value = ($player.currentTime / $player.duration) * 100;
     let minut = Math.floor(currentTime / 60)
     let second = currentTime % 60
@@ -132,7 +147,7 @@
 
     updatePlayer();
     $player.play()
-  })
+  }) 
   $volume.addEventListener("input", () => {
     $player.volume = $volume.value / 100
     let ovoz = Math.round($volume.value)
